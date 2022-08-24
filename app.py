@@ -2,11 +2,9 @@
 # coding=utf-8
 from os import path
 import os
-import multiprocessing
-import copy
-import requests
 
-from time import sleep
+import copy
+
 
 from website import auth, parsons
 from website import statistics
@@ -43,11 +41,6 @@ import collections
 import datetime
 import sys
 import textwrap
-
-print("I'm here 6")
-from webview import run_viewer
-print("I'm here 7")
-
 
 # Todo TB: This can introduce a possible app breaking bug when switching to Python 4 -> e.g. Python 4.0.1 is invalid
 if (sys.version_info.major < 3 or sys.version_info.minor < 7):
@@ -1692,29 +1685,6 @@ def on_server_start():
     pass
 
 
-def start_server(threaded=False, is_in_debugger=False, use_reloader=False):
-    logging.warning("Starting with %s %s", threaded, is_in_debugger)
-    # Threaded option enables multiple instances for multiple user access support
-    app.run(threaded=threaded,
-            debug=not is_in_debugger,
-            port=config['port'],
-            host="0.0.0.0",
-            use_reloader=use_reloader)
-
-
-def wait_server_ready():
-    while True:
-        try:
-            resp = requests.get('http://localhost:8080')
-            if resp.status_code == 200:
-                return
-            else:
-                logging.info("Status code %s", resp.status_code)
-        except:
-            logging.error("Server not ready: request errored")
-        sleep(.2)
-
-
 if __name__ == '__main__':
     # Start the server on a developer machine. Flask is initialized in DEBUG mode, so it
     # hot-reloads files. We also flip our own internal "debug mode" flag to True, so our
@@ -1724,18 +1694,8 @@ if __name__ == '__main__':
     # If we are running in a Python debugger, don't use flasks reload mode. It creates
     # subprocesses which make debugging harder.
     is_in_debugger = sys.gettrace() is not None
-
-    args = sys.argv[1:]
-    if len(args) and args[0] != "server":
-        server = multiprocessing.Process(
-            target=start_server, args=(False, is_in_debugger, False))
-        server.start()
-        wait_server_ready()
-        try:
-            run_viewer()
-        finally:
-            server.terminate()
-            server.join()
-    else:
-        on_server_start()
-        start_server(True, is_in_debugger, True)
+    app.run(threaded=True,
+            debug=not is_in_debugger,
+            port=config['port'],
+            host="0.0.0.0",
+            use_reloader=not is_in_debugger)

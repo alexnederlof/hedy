@@ -1,26 +1,48 @@
-print("Can I haz QtCore")
-from PyQt6.QtCore import QUrl
-print("Can I haz QtWidgets")
-from PyQt6.QtWidgets import QApplication
-print("Can I haz QtWebEngineWidgets")
+
+import random
+from PyQt6.QtCore import QUrl, QSize, Qt
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 
+class Viewer:
 
-def run_viewer():
-    app = QApplication([])
-    web = QWebEngineView()
+    def __init__(self, url) -> None:
+        self.app = QApplication([])
+        self.url = url
 
-    # Initialize web engine
-    # Set window title
-    web.setWindowTitle("Hedy code")
-    web.setZoomFactor(1)
-    # set window size
-    web.resize(web.maximumSize())
-    # set window zoom
+    def run_viewer(self):
+        self.web = QWebEngineView()
+        web = self.web
+        # Initialize web engine
+        # Set window title
+        web.setWindowTitle("Hedy code")
+        web.setZoomFactor(1)
+        # set window size
+        max = web.maximumSize()
+        ideal = QSize(min(max.width(), 1280), max.height())
+        web.resize(ideal)
+        web.move(web.geometry().center())
+        # set window zoom
 
-    # load the url
-    web.load(QUrl("http://localhost:8080"))
-    # Show the results
-    web.show()
-    # web.setZoomFactor(1.5)
-    app.exec()
+        # load the url
+        web.load(QUrl(self.url))
+        # Show the results
+        web.show()
+        # web.setZoomFactor(1.5)
+        self.app.exec()
+
+    def show_error(self, message):
+        w = ErrorWidget(message)
+        w.resize(800, 600)
+        w.show()
+        self.app.exec()
+
+
+class ErrorWidget(QWidget):
+    def __init__(self, message):
+        QWidget.__init__(self)
+
+        self.text = QLabel(message)
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.text)
+        self.setLayout(self.layout)
