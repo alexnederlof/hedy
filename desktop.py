@@ -32,9 +32,6 @@ def wait_server_ready():
         sleep(.2)
     raise Exception("No server could be loaded")
 
-def dumb_method():
-    logging.warning("I'm just a dumb method")
-
 if __name__ == '__main__':
     multiprocessing.freeze_support()
     try:
