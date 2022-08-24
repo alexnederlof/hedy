@@ -1,6 +1,9 @@
-from PyQt6.QtWebEngineWidgets import QWebEngineView
+print("Can I haz QtCore")
 from PyQt6.QtCore import QUrl
+print("Can I haz QtWidgets")
 from PyQt6.QtWidgets import QApplication
+print("Can I haz QtWebEngineWidgets")
+from PyQt6.QtWebEngineWidgets import QWebEngineView
 
 
 def run_viewer():

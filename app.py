@@ -1,4 +1,7 @@
+
 # coding=utf-8
+from os import path
+import os
 import multiprocessing
 import copy
 import requests
@@ -17,6 +20,7 @@ from website.log_fetcher import log_fetcher
 from website.auth import current_user, login_user_from_token_cookie, requires_login, is_admin, is_teacher, update_is_teacher
 from website.yaml_file import YamlFile
 from website import querylog, aws_helpers, jsonbin, translating, ab_proxying, cdn, database, achievements
+
 import hedy_translation
 from hedy_content import COUNTRIES, ALL_LANGUAGES, ALL_KEYWORD_LANGUAGES, NON_LATIN_LANGUAGES, NON_BABEL
 import hedyweb
@@ -40,7 +44,10 @@ import datetime
 import sys
 import textwrap
 
+print("I'm here 6")
 from webview import run_viewer
+print("I'm here 7")
+
 
 # Todo TB: This can introduce a possible app breaking bug when switching to Python 4 -> e.g. Python 4.0.1 is invalid
 if (sys.version_info.major < 3 or sys.version_info.minor < 7):
@@ -49,8 +56,6 @@ if (sys.version_info.major < 3 or sys.version_info.minor < 7):
     quit()
 
 # Set the current directory to the root Hedy folder
-import os
-from os import path
 os.chdir(os.path.join(os.getcwd(), __file__.replace(
     os.path.basename(__file__), '')))
 
@@ -1721,7 +1726,7 @@ if __name__ == '__main__':
     is_in_debugger = sys.gettrace() is not None
 
     args = sys.argv[1:]
-    if len(args) and args[0] == "desktop":
+    if len(args) and args[0] != "server":
         server = multiprocessing.Process(
             target=start_server, args=(False, is_in_debugger, False))
         server.start()
