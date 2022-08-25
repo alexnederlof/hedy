@@ -1,3 +1,7 @@
+# This file is the specification for packaging hedy
+# To make a package, run `pyinstaller app.spec -y`
+# On Mac, you can run the executable from dist/Hedy/Hedy
+# Or open the actually packaged app
 block_cipher = None
 
 a = Analysis(

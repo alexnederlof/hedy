@@ -4,9 +4,19 @@ from PyQt6.QtCore import QUrl, QSize, Qt
 from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 
+
 class Viewer:
+    """
+    Should actually be called WebWindow or something.
+    It's the class that holds the logic to show a chrome
+    based browser, that loads Hedy
+    """
 
     def __init__(self, url) -> None:
+        # QT Applications need a running QApplication
+        # This works with some shady python singleton stuff
+        # So everything created after this knows of 
+        # QApplication
         self.app = QApplication([])
         self.url = url
 
@@ -32,6 +42,11 @@ class Viewer:
         self.app.exec()
 
     def show_error(self, message):
+        """
+        This shows a window with just a text message. Handy
+        in case you've packaged your app on a Mac, and you
+        can no longer get console output.
+        """
         w = ErrorWidget(message)
         w.resize(800, 600)
         w.show()
